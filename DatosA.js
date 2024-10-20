@@ -11,19 +11,31 @@ export default function DatosA() {
   const { codigo, nip, setCodigo, setNip } = useContext(UsuarioContext);
 
   useEffect(() => {
-    fetch(`http://148.202.152.33/cucei/fotoA.php?codigo=${codigo}`)
-      .then((res) => res.blob())
-      .then((img) => {
-        console.log(img)
-        setFoto(img)
-      })
-      .catch((err) => console.log(err));
+    var fotoXhttp = new XMLHttpRequest();
+
+    fotoXhttp.onreadystatechange = function () {
+      if (this.readyState === 4 && this.status === 200) {
+        setFoto(this.responseText);
+      }
+    };
+
+    fotoXhttp.open(
+      "GET",
+      `http://148.202.152.33/cucei/fotoA.php?codigo=${codigo}`,
+      true
+    );
+    fotoXhttp.send();
   }, []);
 
   return (
     <View>
       <Text>DatosA</Text>
-      {foto != null && <Image source={{uri: foto}} width={200} height={200} />}
+      {foto ? (
+        <Image source={{ uri: foto }} style={{ width: 200, height: 200 }} />
+      ) : (
+        <Text>No foto</Text>
+      )}
+      {console.log(foto)}
     </View>
   );
 }
