@@ -5,8 +5,6 @@ import Clase from "./Componentes/Clase";
 const Horario = ({ route, navigation }) => {
   const [data, setData] = useState([]);
 
-  console.log(data);
-
   useEffect(() => {
     fetchData();
   }, []);

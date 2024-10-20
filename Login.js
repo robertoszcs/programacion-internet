@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, Image, TextInput, Button } from 'react-native';
+import UsuarioContext from './UsuarioContext';
 
 const Login = ({navigation}) => {
-  const [codigo, setCodigo] = useState('');
-  const [nip, setNip] = useState('');
+
+  const {codigo, nip, setCodigo, setNip} = useContext(UsuarioContext);
 
   const login = () => {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
-        console.log(xhttp.responseText);
         if (!xhttp.responseText === '0') {
           console.log("error"); 
         } else {
