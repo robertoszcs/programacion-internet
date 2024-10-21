@@ -6,7 +6,8 @@ export default function DatosA() {
   const [foto, setFoto] = useState(null);
   const [nombre, setNombre] = useState(null);
   const [carrera, setCarrera] = useState(null);
-  const [usuario, setUsuario] = useState(null);
+  const [tipoUsuario, setTipoUsuario] = useState(null);
+  const [estatus, setEstatus] = useState(null);
 
   const { codigo, nip, setCodigo, setNip } = useContext(UsuarioContext);
 
@@ -25,6 +26,26 @@ export default function DatosA() {
       true
     );
     fotoXhttp.send();
+
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+      if (this.readyState === 4 && this.status === 200) {
+          const datos = JSON.parse(xhttp.responseText);
+
+          setNombre(datos.nombre);
+          setCarrera(datos.carrera[0]);
+          setTipoUsuario(datos.tipoUsuario);
+          setEstatus(datos.estatus);
+      }
+    };
+
+    xhttp.open(
+      "GET",
+      `http://148.202.152.33/cucei/credenciales.php?codigo=${codigo}&nip=${nip}`,
+      true
+    );
+    xhttp.send();
   }, []);
 
   return (
@@ -35,7 +56,18 @@ export default function DatosA() {
       ) : (
         <Text>No foto</Text>
       )}
-      {console.log(foto)}
+
+      <View>
+        <Text>Datos Alumno:</Text>
+        <Text>Codigo: {codigo}</Text>
+        <Text>Nombre: {nombre}</Text>
+        <Text>Carrera: {carrera && carrera.descripcion}</Text>
+        <Text>Ciclo Ingreso: {carrera && carrera.cicloIngreso}</Text>
+        <Text>Escuela: {carrera && carrera.escuela}</Text>
+        <Text>Ultimo Ciclo: {carrera && carrera.ultimoCiclo}</Text>
+        <Text>Tipo de Usuario: {tipoUsuario}</Text>
+        <Text>Estatus: {estatus}</Text>
+      </View>
     </View>
   );
 }
